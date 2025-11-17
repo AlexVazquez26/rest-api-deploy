@@ -1,0 +1,65 @@
+Ahora mismo estás usando un archivo JSON como si fuera tu “base de datos”, solo para hacer pruebas locales. Express lo lee al iniciar el servidor, lo guarda en memoria, y todas tus rutas trabajan con esa copia.
+
+🧩 Qué pasa ahora
+
+Cuando haces un PATCH o POST, estás modificando el arreglo movies que vive en memoria.
+Pero como no estás guardando los cambios con fs.writeFile, el archivo movies.json en disco no se toca, así que cuando reinicias el servidor todo vuelve a como estaba.
+
+🚀 Qué pasará más adelante
+
+En una app real, el JSON se reemplaza por una base de datos.
+Ahí sí estarías persistiendo los cambios, por ejemplo:
+
+Base de datos	Cómo se usa con Node
+SQLite / PostgreSQL / MySQL	con librerías como sequelize, knex, o prisma
+MongoDB	con mongoose o el driver oficial
+Firebase / Supabase	vía SDKs o REST APIs
+Redis	para cache o almacenamiento temporal
+
+Con una DB, cada PATCH, POST o DELETE realmente modifica los datos guardados, y si reinicias el servidor los cambios persisten.
+
+💡 En resumen
+
+movies.json = simulación de base de datos (solo vive en memoria mientras el server corre).
+
+PATCH, POST, DELETE = cambian los datos en memoria, no el archivo.
+
+Si quieres persistir localmente → usas fs.writeFile.
+
+Si quieres persistir profesionalmente → usas una base de datos real.
+
+
+
+
+LOS ARHIVOS JSON NO PERMITEN COMENTARIOS no poner comentarios
+
+
+
+DIFERENCIAS ENTRE POST PUT PATCH
+
+Idempotencia:
+propiedad de realizar una accion determinada y aun asi conseguir 
+siempre el mismo resultado
+
+
+POST 
+Crear un nuevo recurso en el servidor
+/movies
+IDEMPOTENTE?
+No porque siempre creas un nuevo recurso
+
+
+PUT
+Actualizar totalmente un elemento ya existente O crearlo si no existente
+/movies/123-456-789
+IDEMPOTENTE?
+S, el resultado siempre va a ser el mismo porque la URL siempre va a ser la misma
+
+
+PATCH
+actualizar parcialmente un elemento/recurdo
+/movies/123-456-789
+IDEMPOTENTE?
+Normalmente si pero depende
+
+

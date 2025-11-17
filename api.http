@@ -1,0 +1,30 @@
+###Recuperar todas las peliculas
+GET http://localhost:1234/movies
+
+###Recuperar una pelicula por id
+GET http://localhost:1234/movies/c8a7d63f-3b04-44d3-9d95-8782fd7dcfaf
+
+###Recuperar todas las peliculas por género
+GET http://localhost:1234/movies?genre=Action
+
+
+###Crear un pelicula con POST
+POST http://localhost:1234/movies  
+Content-Type: application/json  
+
+{
+    "title" : "Iron Man",
+    "year": 2008,
+    "director":"Jon Favreau",
+    "duration": 126,
+    "poster": "https://es.web.img2.acsta.net/c_310_420/medias/nmedia/18/66/64/01/20168724.jpg",
+    "genre":["Action","Sci-Fi"]
+}
+###Actualizar una pelicula
+PATCH http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+Content-Type: application/json  
+
+{
+   "id": 128, 
+   "year": 1998 
+}
