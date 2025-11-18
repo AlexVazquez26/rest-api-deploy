@@ -1,16 +1,15 @@
+//Dependencia que ayuda a crear UUID (Univque Universal ID)
 import { Router } from 'express';
+import { MovieController } from '../controllers/movies.js';
 
-const router = Router();
+export const moviesRouter = Router();
 
-router.get('/', (req, res) => {
-  const { genre } = req.query;
-  if (genre) {
-    const filteredMovies = movies.filter((movie) =>
-      movie.genre.some((g) => g.toLowerCase() === genre.toLowerCase())
-    );
-    return res.json(filteredMovies);
-  }
-  res.json(movies);
-});
+moviesRouter.get('/', MovieController.getAll);
 
-router.get('.');
+moviesRouter.get('/:id', MovieController.getById);
+
+moviesRouter.post('/', MovieController.create);
+
+moviesRouter.delete('/:id', MovieController.delete);
+
+moviesRouter.patch('/:id', MovieController.changeById);
