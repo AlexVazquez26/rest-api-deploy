@@ -1,5 +1,6 @@
 //librería que hace validaciones de datos
-const z = require('zod');
+// const z = require('zod'); commonJs
+import z from 'zod';
 
 const movieSchema = z.object({
   title: z.string({
@@ -33,20 +34,28 @@ const movieSchema = z.object({
     }),
 });
 
-function validateMovie(object) {
-  return movieSchema.safeParse(object);
+//=============================esto es con commonJS=============================
+// function validateMovie(object) {
+//   return movieSchema.safeParse(object);
+// }
+
+// function validatePartialMovie(object) {
+//   //revisa cada uno de los elementos que estan dentro del esquema SI estan, si no estan los ignora
+
+//   //por ejemplo no tiene que cumplir con todos y cada uno de ellos
+//   //Si existe "tittle" entonces valida tittle con el esquema de arriba
+//   //Si no existe no hará nada  esto lo hace ----> partial()
+//   return movieSchema.partial().safeParse(object);
+// }
+
+// module.exports = {
+//   validateMovie,
+//   validatePartialMovie,
+// };
+//=============================esto es con commonJS=============================
+export function validateMovie(input) {
+  return movieSchema.safeParse(input);
 }
-
-function validatePartialMovie(object) {
-  //revisa cada uno de los elementos que estan dentro del esquema SI estan, si no estan los ignora
-
-  //por ejemplo no tiene que cumplir con todos y cada uno de ellos
-  //Si existe "tittle" entonces valida tittle con el esquema de arriba
-  //Si no existe no hará nada  esto lo hace ----> partial()
-  return movieSchema.partial().safeParse(object);
+export function validatePartialMovie(input) {
+  return movieSchema.partial().safeParse(input);
 }
-
-module.exports = {
-  validateMovie,
-  validatePartialMovie,
-};

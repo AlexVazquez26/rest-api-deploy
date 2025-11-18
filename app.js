@@ -1,18 +1,29 @@
 //Dependencia que sirve para hacer eventos de API mas facilmente
-const express = require('express'); //require -> commonJS
+import express, { json } from 'express'; //require -> commonJS
 //Dependencia que ayuda a crear UUID (Univque Universal ID)
-const crypto = require('node:crypto');
+import { randomUUID } from 'node:crypto';
 //Aqui se guarda el json en una constante Node.js literalmente ya lo
-const cors = require('cors');
+import cors from 'cors';
 //descifra por ti
-const movies = require('./movies.json');
-const { validateMovie } = require('./schemas/movies');
-const { validatePartialMovie } = require('./schemas/movies');
+// import movies from './movies.json' assert { type: 'json' }; //<--- Esto no es valido, solamente en commonJS (sin el assert) //Esta Sintaxis no existe
+// import movies from './movies.json' with { type: 'json' };  //no se va  a ocupar esta sintaxis para leer el JSON en MODULE
+import { validateMovie, validatePartialMovie } from './schemas/movies.js';
+import movies from './movies.json' with { type: 'json' };
+
+//Como leer un json en ESModules Forma 1
+// import fs from 'node:fs';
+// const movies = JSON.parse(fs.readFileSync('./movies.json', 'utf-8'));
+
+//Como leer JSON en ESMODULES recomendado (en el video de midulive)
+// import {createRequire} from 'node:module';
+// const require = createRequire(import.meta.url);
+// const movies = require('./movies.json');
+
 
 const port = process.env.PORT ?? 1234;
 const app = express();
 app.disable('x-powered-by'); //Disable the header x-powered-by
-app.use(express.json());
+app.use(json());
 const ACCEPTED_ORIGINS = [
   'http://localhost:8080',
   'http://localhost:1234',
@@ -99,6 +110,7 @@ app.get('/movies', (req, res) => {
   res.json(movies);
 });
 
+
 //el :id va a ser dinamico
 //regex -> es usar como comodines las busquedas
 app.get('/movies/:id', (req, res) => {
@@ -123,7 +135,7 @@ app.post('/movies', (req, res) => {
 
   //Aqui sería hacer en la base de datos un "algo"
   const newMovie = {
-    id: crypto.randomUUID(),
+    id: randomUUID(),
     //req.body es datos sin revisar
     //req.data es datos ya revisados
     ...result.data, //✖️ No es lo mismo que req.body
